@@ -1,0 +1,280 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{UoYstyle,harvard}
+\newcommand{\cmdsty}[1]{\textsf{#1}}
+\newcommand{\cmd}[1]{\cmdsty{\textbackslash#1}}
+\newcommand{\pcmd}[2]{\cmdsty{\cmd{#1}$\{$#2$\}$}}
+\newcommand{\nl}{\textbackslash\textbackslash}
+\title{Typesetting University of York Letters:\\
+                \LaTeX\ class \cmdsty{UoYletter}}
+\author{Jeremy Jacob
+        \thanks{Department of Computer Science;
+                Ext 2747; $<$jeremy@minster.york.ac.uk$>$}}
+\date{10 September 2010}
+\begin{document}
+\maketitle
+\section{Introduction}
+\LaTeX\ class \cmdsty{UoYletter} is provided for typesetting
+University of York letters.  It produces letters which are as close to
+the University's ``authorised'' style (including forcing fields into
+the correct typeface) as I can make it, given the information
+provided.
+
+\cmdsty{UoYletter} inherits from the standard \cmdsty{letter} style:
+see \citeasnoun{Lamport1994} for a description.  The way letters are
+typed with \cmdsty{UoYletter} is similar to that of \cmdsty{letter}:
+the environment \cmdsty{letter} delimits a letter, and takes a
+parameter containing the ``To:'' address; commands
+\pcmd{opening}{\ldots} and \pcmd{closing}{\ldots} are required; and
+\pcmd{encl}{\ldots}, \pcmd{ps}{\ldots} are available.
+ 
+\cmdsty{UoYletter} does two things for you:
+\begin{itemize}
+\item it replaces the \cmd{address} declaration by a collection of
+declarations (see Section \ref{NewDec:Sec}); and
+\item it provides a few extra commands for use within your document
+(see Section \ref{NewCom:Sec}).
+\end{itemize}
+
+For more general information about \LaTeX\ see
+\citeasnoun{Lamport1994} and the ``Local Guide''.
+
+\section{Class options}\label{ClOpts:Sec}
+The options to \cmdsty{UoYletter} are identical to those of
+\cmdsty{letter}, except for paper size, which is fixed at
+\cmdsty{a4paper} (again, the reader is referred
+\citeasnoun{Lamport1994}) and for options to control the printing of
+the woodcut.  The extra options come in two groups, one to choose
+monochrome or polychrome and one to choose the logotype.  They are:
+\begin{description}
+\item[\cmdsty{monochrome}] all logotypes and text in black-and-white
+  (this is the default); and
+\item[\cmdsty{polychrome}] colour logotypes and the opportunity change
+  the colour of the headings from black (see
+  Section~\ref{NewDec:Sec}).
+\end{description}
+and
+\begin{description}
+\item[\cmdsty{qapfhe}] to get the Queen's Anniversary Prize logotype
+  (this should not be used except to print off hard copies of old
+  letters).
+\item[\cmdsty{woodcut}] to get the University Woodcut (this is the
+  default); and
+\item[\cmdsty{nowoodcut}] to get neither.
+\end{description}
+If more than one of these options are given the latest, as given by
+this list, is used.
+
+\section{New declarations}\label{NewDec:Sec}
+
+The declarations come in four kinds:
+\begin{itemize}
+\item for the author's group (see Subsection~\ref{GrpDec:SS});
+\item for the author's personal details (see
+  Subsection~\ref{PerDec:SS});
+\item letter specific (see Subsection~\ref{LetDec:SS}); and
+\item colour settings (see Subsection~\ref{Colour:SS}).
+\end{itemize}
+\subsection{Group declarations}\label{GrpDec:SS}
+Group information consists of a mandatory group name (for example
+``Department of History'', ``Printing Unit'' or ``High Integrity
+Software Engineering Group'') and some optional fields.
+If the group is a department, the department's name is declared with
+\pcmd{department}{name}.  For example, \pcmd{department}{History}.
+If the group is neither a department nor a college, its name should be
+declared using \pcmd{groupname}{name}.  The \cmdsty{name} may include
+newline commands (\nl) and emboldening commands
+(\pcmd{textbf}{\ldots}); \pcmd{department}{name} is equivalent to:\\
+\pcmd{groupname}{Department of\ \nl \pcmd{textbf}{name}}.
+
+
+The optional declarations are:
+\begin{itemize}
+\item campus: either \cmd{HesEast} or \cmd{HesWest} (default is
+  \cmd{HesEast});
+\item title of the head of the group (\pcmd{groupheadtitle}{title});
+\item name of the head of the group (\pcmd{grouphead}{name});
+\item group telephone extension (\pcmd{grouptelext}{dddd});
+\item group facsimile extension (\pcmd{groupfaxext}{dddd}); and
+\item electronic mail domain (\pcmd{emaildomain}{full.domain.name}).
+\end{itemize}
+
+For example, for the Department of Computer Science the following
+declarations might be made:\\
+\hspace*{1cm}\begin{tabular}[t]{l}
+\pcmd{department}{Computer Science}\\
+\pcmd{grouphead}{Ian Pyle}\\
+\pcmd{groupheadtitle}{Head of Department}\\
+\pcmd{grouptelext}{2722}\\
+\pcmd{groupfaxext}{2767}
+\end{tabular}\\
+However, in the case of The Department of Computer Science, a single
+declaration, \cmd{ComputerScience}, is provided; it is equivalent to
+the preceeding five declarations, but with up-to-date values!
+
+\subsection{Personal declarations}\label{PerDec:SS}
+
+There is one mandatory declaration, \pcmd{signature}{name}, exactly as
+in class \cmdsty{letter}.
+
+The new personal declarations are all optional.  They are used to give
+\begin{itemize}
+\item a formal variant of your name (\pcmd{namequal}{name and
+qualifications}), this is different from your signature;
+\item a job title (e.g. ``Lecturer'', ``Research Fellow'')
+(\pcmd{jobtitle}{string}); and
+\item your login name for electronic mail (\pcmd{loginid}{string}).
+\end{itemize}
+
+\subsection{Letter specific declarations}\label{LetDec:SS}
+
+The letter specific declarations include, from \cmdsty{letter},
+\pcmd{date}{string}, with default \cmd{today}.
+
+In addition, there are declarations for including an optional:
+\begin{itemize}
+\item ``your reference'' field (\pcmd{yourref}{string}); and
+\item ``our reference'' field (\pcmd{ourref}{string}). 
+\end{itemize}
+
+The declarations \cmd{national} and \cmd{international} change the
+headings for inland and overseas letters respectively; the default is
+\cmd{national}.
+
+\subsection{Colour setting commands}\label{Colour:SS}
+
+To use colour within a \cmdsty{polychrome} letter body just use the
+standard \LaTeX\ colour commands (see Section~7.3 of
+\citeasnoun{Lamport1994}).  Within each heading declaration colour can
+be set on a character by character basis if you wish.  However a
+colour for the whole header (excluding the ``to address'') can be
+given with the \pcmd{headcolour}{colour} declaration.  The default
+colour is \cmdsty{black}.  In a \cmdsty{monochrome} document this
+declaration is ignored, but any colour changes you program by hand
+will work (or not) as described in the \LaTeX\ book.
+
+\section{New commands}\label{NewCom:Sec}
+
+The two commands \pcmd{about}{string} and \pcmd{re}{string} may be
+used in the body of the letter (traditionally immediately after the
+greeting) to give the subject of the letter, preceeded by
+``\textbf{Re:}'' in the latter case.  The \cmdsty{string} may contain
+newline commands (\nl).
+
+\section{Example}
+
+An example of an input file is given in Figure \ref{ExampleInput:Fig}.
+\begin{figure}
+{\sffamily
+\begin{tabular}[t]{l}
+\pcmd{documentclass[12pt]}{UoYletter}\\[1ex]
+\cmd{ComputerScience}\\
+\pcmd{signature}{Hes Lington-Hall}\\
+\pcmd{namequal}{Prof. H. Lington-Hall, CDM, DDT}\\
+\pcmd{jobtitle}{Layabout}\\
+\pcmd{extension}{6666}\\
+\pcmd{loginid}{hlh}\\
+\pcmd{emaildomain}{devnull.york.ac.uk}
+        \% must follow ``\cmd{ComputerScience}''\\
+\pcmd{website}{http://www.java.applets.R.us/} \% ditto\\[1ex]
+\pcmd{definecolor}{brown$\}\{$rgb$\}\{$0.7,0.5,0.3}\\
+\pcmd{headcolour}{brown}\\[1ex]
+\pcmd{date}{31 February 1944}\\[1ex]
+\pcmd{begin}{document}\\
+\pcmd{begin}{letter}\\
+\hspace*{1cm}   $\{$Dr. A. Cademic\nl The House\nl Avenue Road\nl
+                The City\nl CI9 0OO$\}$\\
+\pcmd{ourref}{Sp/1/H-LH/GS}\\
+\pcmd{yourref}{23 7-A/b}\\
+\pcmd{opening}{Dear Arbuthnot,}\\
+\pcmd{re}{Arachnophilia}\\
+Thank you for your letter of 5th \pcmd{emph}{inst}.\\
+The Tarantulas finished off Agatha.\\
+I hope you enjoy the enclosed;\\
+perhaps it could help with the\\
+Problem Of The One Undergraduate Too Many!\\
+\pcmd{closing}{Lurv `n' kisses,}\\
+\pcmd{encl}{A Black Widow}\\
+\pcmd{ps}{PS The Bird Eating Spiders don't.}\\
+\pcmd{end}{letter}\\
+\pcmd{end}{document}
+\end{tabular}
+}
+\caption{An example input file}\label{ExampleInput:Fig}
+\end{figure}
+It shows how default values in a declaration such as
+\cmd{ComputerScience} can be overridden as well as where the
+declarations may be placed.  This file (\cmdsty{Example.tex}) and its
+output (\cmdsty{Example.dvi}) may be found in the same directory as
+the class file \cmdsty{UoYletter}.
+
+\section{Making a personal letter class}
+
+It is possible to save typing by creating your own sub-class of
+\cmdsty{UoYletter}.  By creating a file called \cmdsty{HLHletter.cls}
+with contents as in Figure \ref{Cls:Fig} the example in Figure
+\ref{ExampleInput:Fig} could have been typed as in Figure
+\ref{ExampleInpTwo:Fig}.
+\begin{figure}
+{\sffamily
+\begin{tabular}[t]{l}
+\pcmd{NeedsTeXFormat}{LaTeX2e}\\
+\pcmd{ProvidesClass}{HLHletter}[1994/09/13 Private Class for HLH]\\
+\pcmd{DeclareOption*}
+        {\pcmd{PassOptionsToClass}{\cmd{CurrentOption}}$\{$UoYLetter$\}$}\\
+\cmd{ProcessOptions}\\
+\pcmd{LoadClass}{UoYletter}\\
+\cmd{ComputerScience}\\
+\pcmd{signature}{Hes Lington-Hall}\\
+\pcmd{namequal}{Prof. H. Lington-Hall, CDM, DDT}\\
+\pcmd{jobtitle}{Layabout}\\
+\pcmd{extension}{6666}\\
+\pcmd{loginid}{hlh}\\
+\pcmd{emaildomain}{devnull.york.ac.uk}\\
+\pcmd{website}{http://www.java.applets.R.us/}\\
+\pcmd{definecolor}{brown$\}\{$rgb$\}\{$0.7,0.5,0.3}\\
+\pcmd{headcolour}{brown}
+\end{tabular}
+}
+\caption{An example sub-class of \cmdsty{UoYletter}}\label{Cls:Fig}
+\end{figure}
+\begin{figure}
+{\sffamily
+\begin{tabular}[t]{l}
+\pcmd{documentclass[12pt]}{HLHletter}\\
+\pcmd{date}{31 February 1944}\\[1ex]
+\pcmd{begin}{document}\\
+\pcmd{begin}{letter}\\
+\hspace*{1cm}   $\{$Dr. A. Cademic\nl The House\nl Avenue Road\nl
+                The City\nl CI9 0OO$\}$\\
+\pcmd{ourref}{Sp/1/H-LH/GS}\\
+\pcmd{yourref}{23 7-A/b}\\
+\pcmd{opening}{Dear Arbuthnot,}\\
+\pcmd{re}{Arachnophilia}\\
+Thank you for your letter of 5th \pcmd{emph}{inst}.\\
+The Tarantulas finished off Agatha.\\
+I hope you enjoy the enclosed;\\
+perhaps it could help with the\\
+Problem Of The One Undergraduate Too Many!\\
+\pcmd{closing}{Lurv `n' kisses,}\\
+\pcmd{encl}{A Black Widow}\\
+\pcmd{ps}{PS The Bird Eating Spiders don't.}\\
+\pcmd{end}{letter}\\
+\pcmd{end}{document}
+\end{tabular}
+}
+\caption{A letter made with a private letter class}\label{ExampleInpTwo:Fig}
+\end{figure}
+
+See the Local Guide to find out how to persuade \LaTeX\ to take notice
+of your personal letter class.
+
+\section{Packages and files used by \cmdsty{UoYletter}}
+
+Class \cmdsty{UoYletter} loads the standard package \cmdsty{letter},
+and also the local style \cmdsty{UoYstyle}.  In turn \cmdsty{UoYstyle}
+loads three standard styles: \cmdsty{palatcm} (for Palatino fonts),
+\cmdsty{graphics} and \cmdsty{color}.
+
+\bibliographystyle{agsm}
+\bibliography{References} 
+\end{document}

@@ -1,0 +1,141 @@
+\documentclass[12pt,a4paper]{scrartcl}
+\usepackage{UoYstyle}
+\title{A \LaTeX\ package to provide\\The University of York's house style}
+\author{Jeremy Jacob}
+\date{2011 January 24}
+\hypersetup{
+  pdfauthor={Jeremy L. Jacob},
+  pdftitle={A LaTeX package to provide The University of York's house style},
+  pdfsubject={A LaTeX style for University of York documents}
+  }
+\DeclareRobustCommand{\cmd}[2]{\textsf{\textbackslash#1}\textit{#2}}
+\DeclareRobustCommand{\logo}[3]{%
+  \begin{center}
+    \begin{tabular}[b]{l}
+      \cmd{#1}{[height]}\\#2\\#3
+    \end{tabular}
+    \hfill
+    \fbox{\csname #1\endcsname}
+  \end{center}
+}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+\label{sec:inroduction}
+
+The \LaTeXe\ package \textsf{UoYstyle} sets up various things to
+provide the standard style for University of York documents in
+(British) English (\autoref{sec:packages}).  It loads the Palatino
+fonts, together with automatic margin kerning
+(\autoref{sec:packages}), defines names for the University's colours
+(\autoref{sec:colour}) and defines commands to typeset various
+logotypes (\autoref{sec:logotype}): University logotypes, University
+woodcuts and the Department of Computer Science logotype and
+
+Each logotype is obtained by a command which has an optional
+parameter: the height of the logotype.  Each logotype, except for the
+three in the \cmd{UoY$*$logo}{} family, is positioned at whatever
+position the source defines.  Each of the \cmd{UoY$*$logo}{} family is
+lowered slightly, to look as though it sits on the same line as the
+surrounding text.
+
+\section{Package options and packages loaded}
+\label{sec:packages}
+
+There is one options: \emph{logos} (default) or \emph{nologos}.  In
+the event of logotypes not being available they can be turned off by
+giving the \emph{nologos} option.
+
+\textsf{UoYstyle} loads the following packages:
+\begin{itemize}
+\item \textsf{babel} (with option \textsf{british)};
+\item \textsf{mathpazo} (the university font for text and
+  mathematics);
+\item \textsf{microtype}
+\item \textsf{graphics} (to load the
+  graphics files for the logotypes);
+\item \textsf{color} (to define
+  University and Departmental colours); and
+\item \textsf{hyperref}.
+\end{itemize}
+
+The package determines the output format being used (either DVI from
+\textsf{latex} for eventual conversion to PostScript by
+\textsf{dvips}, or PDF from \textsf{pdflatex}) to choose an output
+driver for the sub-packages requiring one.
+
+The package looks for the logotype files in
+\begin{itemize}
+\item \textsf{/sys/lib/postscript/logo},
+\item \textsf{/sys/lib/pdf/logo},
+\item \textsf{/usr/local/share/postscript/logo} or
+\item \textsf{/usr/local/share/pdf/logo}
+\end{itemize}
+as appropriate.  If an appropriate one of these directories does not
+exist the package will fail catastrophically.
+
+Other options for \textsf{hyperref} must be set up using
+\cmd{hypersetup}{$\{$\ldots$\}$}.
+
+\section{Defined colours}
+\label{sec:colour}
+\newcommand*{\showcol}[1]{\textsf{#1}~\textcolor{#1}{\rule{1em}{1em}}}
+Several `official' colours are defined:
+
+For the University colour scheme: \showcol{UoYblue} and
+\showcol{UoYgreen}.
+
+For the Departmental colour scheme: \showcol{UoYCSbrightgreen},
+\showcol{UoYCSyellowgreen}, \showcol{UoYCSgrey} and
+\showcol{UoYCSblue}.
+
+These can be used in the normal way as the first argument of a colour
+macro such as: \cmd{color}{}, \cmd{textcolor}{}, \cmd{colorbox}{},
+\cmd{fcolorbox}{} and \cmd{pagecolor}{}.
+
+\section{Commands to produce the logotypes}
+\label{sec:logotype}
+
+Each logotype is described with the command that produces it, its
+default height and the name of the file in the default directory that
+produces it.  The border around each logotype is merely to show the
+logotype's extent; the border is not part of the logotype.
+
+If the \emph{nologos} option is given then a warning message is
+printed.
+
+The directory containing the logotype file must be in your \TeX\
+search path.  On centrally maintained Departmental linux systems, with
+processing by \textsf{pdflatex}, you can do this by setting:\\
+\textsf{TEXINPUTS=\$TEXINPUTS:/usr/share/local/pdf/logo:/usr/local/share/THE-2010}
+
+\subsection{University}
+
+\logo{UoYbwlogo}{3.5ex}{uoy}
+
+\logo{UoYbluelogo}{3.5ex}{uoy-p281}
+
+\logo{UoYgreenlogo}{3.5ex}{uoy-p567}
+
+\logo{Woodcut}{7ex}{univwoodcut}
+
+\logo{UoYbluewoodcut}{7ex}{wct-p281}
+
+\logo{UoYgreenwoodcut}{7ex}{wct-p567}
+
+\subsection{Department}
+
+The old departmental logotypes have been withdrawn, and are no longer
+supported.
+
+\subsection{Times Higher Education University of the Year Award}
+
+Support for these will be withdrawn sometime after the award lapses.
+
+\logo{THESrgb}{10ex}{Logo\_large\_RGB}
+
+\logo{THESgrey}{10ex}{Logo\_large\_grey}
+
+\end{document}
