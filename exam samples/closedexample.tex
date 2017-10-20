@@ -1,0 +1,113 @@
+%\documentclass[rough,answers]{UoYClosedExam}
+%\documentclass[rough]{UoYClosedExam}
+%\documentclass[final,answers]{UoYClosedExam}
+\documentclass[final]{UoYClosedExam}
+
+\usepackage{epsfig}
+\usepackage{graphicx}
+%\graphicspath{{./Pictures/}}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{portland}
+
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{latexsym}
+
+\usepackage{amsmath}
+
+		
+\usepackage{alltt}
+\newenvironment{code}%
+  {\begin{quote}\footnotesize\begin{alltt}}%
+  {\end{alltt}\end{quote}}
+
+\usepackage[]{algorithm2e}
+
+\usepackage{listings}
+\lstdefinestyle{custompython}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=L,
+  xleftmargin=\parindent,
+  language=Python,
+  showstringspaces=false,
+  basicstyle=\small\ttfamily,
+  keywordstyle=\bfseries\color{orange!90!black},
+  commentstyle=\itshape\color{red!40!black},
+  identifierstyle=\color{black!80!white},
+  stringstyle=\color{green!40!black},
+}
+
+\lstset{style = custompython, tabsize = 3}
+
+
+
+\Title{Theory and Practice of Programming\\~\\\large{Closed Lab Assessment}}
+\Examyear{2016-2017}
+\Duration{Three hours}
+\Maccode{COM00007C}
+\Resit
+
+\Rubric{
+
+\begin{flushleft}
+Candidates should answer \textbf{all} questions. Questions 1 and 2 are worth 40\% each, \textbf{the remaining 20\% are allocated to style, clarity, and quality of code.}\\~\\
+
+You should log into the computers, booted under Windows, using your special closed exam login ID (which is your exam number, e.g. Y1234123) and password (which is your username with TPOP appended at the end, e.g. lb007TPOP).   
+
+ 
+This will give you access to a filestore (H: drive), IDLE, Eclipse, the Java API, the assessment paper, and lecture notes. There is no external access to the Internet.
+
+You \textbf{must} save all your code in the $ClosedExamination$ directory on the H: drive. \textbf{Do not} save your code anywhere else other than this directory. 
+
+\begin{itemize}
+	\item Your answer to question 1 must be written in \textbf{Python 3} in the file $maze\_generator.py$ provided,
+	\item solutions for question 2 must be written in \textbf{Java} in the files $BoundingBox.java$, $Asset.java$, and $QTreeAssetManager.java$ provided.
+\end{itemize}  
+
+You are allowed to use your personal course notes (on paper, not electronic), however books are not allowed.\\
+\end{flushleft}
+
+
+Mobile devices must \textbf{not} be taken into the exam. 
+}
+
+
+
+\begin{document}
+
+
+\newpage
+
+
+%%%%%%%%%%  QUESTION 1 %%%%%%%%%%%%%%
+\begin{question}{40}{Python Programming: Basic Programming Structure}
+
+{All code for this question must be written in \textbf{Python 3}, failing to do so will result in a mark of 0\%. In addition the code must be written in the file \verb|maze_generator.py| provided, failing to do so will result in loss of marks. To validate your code, we have provided a PyUnit test class in the file \verb|maze_generator_test.py|.}%\vspace{2mm}
+
+The aim of this question is to generate a solvable maze of a given dimension like the one shown in Figure~\ref{fig:maze}a. A solvable maze is a maze where a path exists between the entrance and the exit. There are many ways to represent a maze, and the one chosen for our problem is a 2D list. For a maze of size $m \times n$ we use a $(2m+1) \times (2n+1)$ 2D list. For example in Figure~\ref{fig:maze}, a $3\times 5$ maze is represented by a $7\times 11$ 2D list. Walls are represented by $0s$, and paths are represented by $1s$. Also of note, the cell $(x,y)$ in the maze is stored in the 2D list at index $[(2*x)+1][(2*y)+1]$. Finally, for simplicity we also decided that the entrance of the maze is always at the top left corner and the exit at the bottom right corner.
+
+
+
+\part[10] Write a function \verb|base_maze(dimension)| that generates a maze of size \verb|dimension|, where \verb|dimension| is a tuple \verb|(rows,columns)|. The function must return a 2D list of size $2 \times rows + 1$ by $2 \times columns + 1$. In addition, every cell in the returned maze is surrounded by walls on all four sides as shown in Figure~\ref{fig:basemaze}.
+
+\begin{answer}
+NOTE FOR THE EXTERNAL EXAMINER AND MARKERS:\\
+The students are provided a Unit test for each question and sub-question during the exam. They will be able to assess their code and progress during examination. The marker has a script to auto-mark each question. This result in a grade of up to 80\%, the last 20\% will be given by reviewing the code, without taking into account if the code is successful or not. It will only take into account the coding style:
+\begin{itemize}
+	\item readability of the code, variable name, respect of convention 5 marks
+	\item clarity of the solution 4 marks
+	\item data encapsulation 3 marks
+	\item proper checking of input where requested, raising exception where requested 4 marks
+	\item comment and docs 4 marks
+\end{itemize} 
+\end{answer}
+
+\end{question}
+
+
+
+
+
+\end{document}

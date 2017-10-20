@@ -59,13 +59,13 @@
   \IfFileExists%
   {/usr/share/york-logos/pdf/UOY-Logo-Long-Black.pdf}%
   {\newcommand*{\UoYstyle@logodir}{/usr/share/york-logos/pdf}}%
-  {\newcommand*{\UoYstyle@logodir}{york-logos/pdf/}}%
+  {\newcommand*{\UoYstyle@logodir}{york-logos/pdf}}%
 \else
  % Ordinary LaTeX with dvips driver
   \IfFileExists%
   {/usr/share/york-logos/eps/UOY-Logo-Long-Black.eps}%
   {\newcommand*{\UoYstyle@logodir}{/usr/share/york-logos/eps}}%
-  {\newcommand*{\UoYstyle@logodir}{//flexfs/compsci/software/UoYlogos/postscript/logo}}%
+  {\newcommand*{\UoYstyle@logodir}{./york-logos/eps}}%
 \fi
 \newcommand*{\UoYstyle@loadlogo}[3]{%
      \raisebox{#2}{\resizebox{!}{#1}{\includegraphics{\UoYstyle@logodir/#3}}}}

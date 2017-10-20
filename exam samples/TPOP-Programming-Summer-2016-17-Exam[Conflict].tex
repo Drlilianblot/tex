@@ -1,0 +1,368 @@
+%\documentclass[rough,answers]{UoYClosedExam}
+%\documentclass[rough]{UoYClosedExam}
+%\documentclass[final,answers]{UoYClosedExam}
+\documentclass[final]{UoYClosedExam}
+
+\usepackage{epsfig}
+\usepackage{graphicx}
+\graphicspath{{./Pictures/}}
+\usepackage{color}
+\usepackage{xcolor}
+
+\usepackage{portland}
+
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{latexsym}
+
+\usepackage{amsmath}
+
+		
+\usepackage{alltt}
+\newenvironment{code}%
+  {\begin{quote}\footnotesize\begin{alltt}}%
+  {\end{alltt}\end{quote}}
+
+\usepackage[]{algorithm2e}
+
+\usepackage{listings}
+\lstdefinestyle{custompython}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=L,
+  xleftmargin=\parindent,
+  language=Python,
+  showstringspaces=false,
+  basicstyle=\small\ttfamily,
+  keywordstyle=\bfseries\color{orange!90!black},
+  commentstyle=\itshape\color{red!40!black},
+  identifierstyle=\color{black!80!white},
+  stringstyle=\color{green!40!black},
+}
+
+\lstset{style = custompython, tabsize = 3}
+
+
+
+\Title{Theory and Practice of Programming\\~\\\large{Closed Lab Assessment}}
+\Examyear{2016-2017}
+\Duration{Three hours}
+\Maccode{COM00007C}
+
+\Rubric{
+
+\begin{flushleft}
+Candidates should answer \textbf{all} questions. Questions 1 and 2 are worth 40\% each, \textbf{the remaining 20\% are allocated to style, clarity, and quality of code.}\\~\\
+
+You should log into the computers, booted under Windows, using your special closed exam login ID (which is your exam number, e.g. Y1234123) and password (which is your username with TPOP appended at the end, e.g. lb007TPOP).   
+
+ 
+This will give you access to a filestore (H: drive), IDLE, Eclipse, the Java API, the assessment paper, and lecture notes. There is no external access to the Internet.
+
+You \textbf{must} save all your code in the $ClosedExamination$ directory on the H: drive. \textbf{Do not} save your code anywhere else other than this directory. 
+
+\begin{itemize}
+	\item Your answer to question 1 must be written in \textbf{Python 3} in the file $maze\_generator.py$ provided,
+	\item solutions for question 2 must be written in \textbf{Java} in the files $BoundingBox.java$, $Asset.java$, and $QTreeAssetManager.java$ provided.
+\end{itemize}  
+
+You are allowed to use your personal course notes (on paper, not electronic), however books are not allowed.\\
+\end{flushleft}
+
+
+Mobile devices must \textbf{not} be taken into the exam. 
+}
+
+
+
+\begin{document}
+
+
+\newpage
+
+
+%%%%%%%%%%  QUESTION 1 %%%%%%%%%%%%%%
+\begin{question}{40}{Python Programming: Basic Programming Structure}
+
+{All code for this question must be written in \textbf{Python 3}, failing to do so will result in a mark of 0\%. In addition the code must be written in the file \verb|maze_generator.py| provided, failing to do so will result in loss of marks. To validate your code, we have provided a PyUnit test class in the file \verb|maze_generator_test.py|.}%\vspace{2mm}
+
+The aim of this question is to generate a solvable maze of a given dimension like the one shown in Figure~\ref{fig:maze}a. A solvable maze is a maze where a path exists between the entrance and the exit. There are many ways to represent a maze, and the one chosen for our problem is a 2D list. For a maze of size $m \times n$ we use a $(2m+1) \times (2n+1)$ 2D list. For example in Figure~\ref{fig:maze}, a $3\times 5$ maze is represented by a $7\times 11$ 2D list. Walls are represented by $0s$, and paths are represented by $1s$. Also of note, the cell $(x,y)$ in the maze is stored in the 2D list at index $[(2*x)+1][(2*y)+1]$. Finally, for simplicity we also decided that the entrance of the maze is always at the top left corner and the exit at the bottom right corner.
+
+
+
+\begin{figure}[ht]%
+\begin{center}
+\begin{tabular}{ccc}
+\includegraphics[height=2.6cm]{maze_3x5.png} &
+\includegraphics[height=2.6cm]{maze_3x5_list.png} &
+\includegraphics[height=2.6cm]{maze_3x5_string2.png} \\
+(a) & (b) & (c)
+\end{tabular}
+\end{center}
+
+\caption{a) a $3\times5$ maze, b) its Python representation as a 2D list of zeros (wall) and ones (no wall), and c) its representation as a string.}%
+\label{fig:maze}%
+\end{figure}
+
+
+One way to generate a maze is to create a base maze where all cells are surrounded by four walls (see Figure~\ref{fig:basemaze}), and then select a series of walls to be removed. This is the approach we will be following in this question.
+
+\begin{figure}[ht]%
+\begin{center}
+\begin{tabular}{ccc}
+\includegraphics[height=2.6cm]{maze_base.png} &
+\includegraphics[height=2.6cm]{maze_base_3x5_list.png} &
+\includegraphics[height=2.6cm]{maze_base_3x5_string.png} \\
+(a) & (b) & (c)
+\end{tabular}	
+\end{center}
+
+\caption{a) a $3\times5$ base maze b) its representation as a 2D list of zeros (walls) and ones (cells), and c) its representation as a string. }%
+\label{fig:basemaze}%
+\end{figure}
+
+
+
+\part[10] Write a function \verb|base_maze(dimension)| that generates a maze of size \verb|dimension|, where \verb|dimension| is a tuple \verb|(rows,columns)|. The function must return a 2D list of size $2 \times rows + 1$ by $2 \times columns + 1$. In addition, every cell in the returned maze is surrounded by walls on all four sides as shown in Figure~\ref{fig:basemaze}.
+
+\begin{answer}
+NOTE FOR THE EXTERNAL EXAMINER AND MARKERS:\\
+The students are provided a Unit test for each question and sub-question during the exam. They will be able to assess their code and progress during examination. The marker has a script to auto-mark each question. This result in a grade of up to 80\%, the last 20\% will be given by reviewing the code, without taking into account if the code is successful or not. It will only take into account the coding style:
+\begin{itemize}
+	\item readability of the code, variable name, respect of convention 5 marks
+	\item clarity of the solution 4 marks
+	\item data encapsulation 3 marks
+	\item proper checking of input where requested, raising exception where requested 4 marks
+	\item comment and docs 4 marks
+\end{itemize} 
+
+
+\lstinputlisting[language=Python, firstline=42, lastline=51]{maze_generator.py}
+\end{answer}
+
+\part[10] Write a function \verb|maze_to_string(maze)| which takes a 2D list representation of a maze as shown in Figure~\ref{fig:maze}b (resp. Figure~\ref{fig:basemaze}b), and returns a string as shown in Figure~\ref{fig:maze}c (resp. Figure~\ref{fig:basemaze}c)
+
+\begin{answer}
+\lstinputlisting[language=Python, firstline=54, lastline=64]{maze_generator.py}
+\end{answer}
+
+
+
+\part[5] Write a function \verb|get_neighbours(cell, dimension)| which returns the list of neighbouring cells of \verb|cell|. The parameter \verb|cell| is a tuple \verb|(row, column)| representing the position of the cell in the maze, and \verb|dimension| is a tuple of \verb|(rows, columns)| representing the size of the maze.   The function should raise an \verb|IndexError| if the \verb|cell| is out of the maze bounds. We use a 4-neighbourhood model shown in Figure~\ref{fig:neighbours}. It should be noted that cells at the border of the maze have less than four neighbours.
+
+\begin{figure}[ht]%
+\begin{center}
+\includegraphics[height=4cm]{fourNeighbourhood.png}
+\end{center}
+
+\caption{The four neighbours of the cell $(x,y)$.}
+\label{fig:neighbours}%
+\end{figure}
+
+
+\begin{answer}
+\lstinputlisting[language=Python, firstline=76, lastline=87]{maze_generator.py}
+\end{answer}
+
+
+
+
+
+\part[5] Write a function \verb|remove_wall(maze, cellA, cellB)| which removes the wall between \verb|cellA| and \verb|cellB| if they are adjacent and then return \verb|True|, otherwise returns \verb|False|. For example, removing the wall between cells $(1,2)$ and $(1,3)$ means changing the value in the 2D list at index $[3][6]$ to $1$.
+
+
+
+\begin{answer}
+\lstinputlisting[language=Python, firstline=91, lastline=100]{maze_generator.py}
+\end{answer}
+
+
+\newpage
+
+\part[10] Write the function \verb|maze_builder(dimension)| which returns a solvable maze of size \verb|dimension|, where \verb|dimension| is a tuple of the form \verb|(rows, columns)|. In order to ensure that the maze is solvable you must implements the \emph{Recursive Backtracking} algorithm describe in Algorithm~\ref{algo:backtracking}.
+
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\KwData{A base maze with all cells surrounded by four walls}
+\KwResult{A solvable maze where each cell are connected to any other cells}
+\tcc{Although the initial cell could be chosen randomly, we have chosen to start at cell $(0,0)$}
+$current\_cell \leftarrow$ cell at $(0,0)$\;
+$stack \leftarrow empty~stack$\;
+mark $current\_cell$ as $visited$\;
+\While{not all cells are marked $visited$}{
+	\eIf{$current\_cell$ has any neighbours which have not been $visited$}{
+		$neighbour\_cell \leftarrow$ Choose randomly one of the unvisited neighbours\;
+		Push $current\_cell$ to the $stack$\;
+		Remove the wall between $current\_cell$ and $neighbour\_cell$\;
+		$current\_cell \leftarrow neighbour\_cell$\;
+		mark $current\_cell$ as $visited$\;
+		}
+		{
+		\If{$stack$ is not empty}{
+		$current\_cell \leftarrow$ Pop a cell from the $stack$\;
+		}
+	}
+}
+\caption{Backtracking maze generation algorithm.}
+\label{algo:backtracking}
+\end{algorithm}
+
+
+\begin{answer}
+\lstinputlisting[language=Python, firstline=103, lastline=127]{maze_generator.py}
+\end{answer}
+
+
+\end{question}
+
+
+%%%%%%%%%%%  QUESTION 2 %%%%%%%%%%%%%%
+\newpage
+\begin{question}{40}{Java Programming: Object Oriented Programming}
+{All code for this question must be written in \textbf{Java 8}, failing to do so will result in a mark of 0\%.}\vspace{3mm}
+
+Spatial indexing is increasingly important as more and more data and applications are geospatially-enabled. Efficiently querying geospatial data, however, is a considerable challenge: because the data is two-dimensional (or sometimes, more), you can't use standard indexing techniques to query on position. Spatial indexes solve this through a variety of techniques, including  QuadTrees.
+
+QuadTrees are a straightforward spatial indexing technique. In a QuadTree, each node represents a bounding box covering some part of the space being indexed, with the root node covering the entire area. Each node is either a leaf node - in which case it contains {\bfseries one or more} indexed entries, and no children, or it is an internal node, in which case it has exactly four children, one for each quadrant obtained by dividing the area covered in half along both axes (as shown in Figure~\ref{fig:quadtree}), and it contains {\bfseries zero or more} indexed entries. An entry is store in a node, if the entry's area intersects more than one children area, or if the node is at the maximum depth of the QuadTree.
+
+\begin{figure}[bht]%
+\begin{tabular}{cc}
+\includegraphics[height=5cm]{point_quadtree.png} &
+\includegraphics[height=5cm]{quadtree.png} \\
+(a) & (b)
+\end{tabular}
+\caption{a) a representation of how a QuadTree divides an indexed area (Source: Wikipedia), b) a representation of how a QuadTree is structured internally.}%
+\label{fig:quadtree}%
+\end{figure}
+
+The company we are working for has a set of assets. An asset is some object (warehouse, fields, building, etc.) which covers an area. The company is interested in finding quickly all assets they have in a given area. For this we index the assets using a QuadTree. In addition we define an area as a rectangular bounding box.
+
+\newpage
+
+\underline{{\bfseries Note:}} To validate your code, we have provided three JUnit test classes, one for each sub-question. The tests are in the files \verb|BoundingBoxTest.java|, \verb|AssetTest.java|, and \verb|QTreeAssetManagerTest.java|.
+
+
+\part[15] We must first define and implement a class \verb|BoundingBox| representing a rectangular area. A \verb|BoundingBox| has four {\bfseries public} attributes of type \verb|int| named \verb|x|, \verb|y|, \verb|width|, and \verb|height|. The point \verb|(x,y)| represent the top left corner of the bounding box as shown in Figure~\ref{fig:boundingbox}. We are using a discrete plan where the smallest area has a width and height of 1, therefore the bottom right corner of a bounding box is at position \verb|(x+width,y+height)|. In addition, to ensure non overlapping of bounding box in a quadtree subdivision of space, the bottom edge and the right edge of the bounding box is not part of the bounding box, i.e. any point with coordinate (x+width, ?) and (?, y+height) is outside the bounding box.
+
+ %(ensuring that a bounding box has $width\times height$ areas of size $1\times 1$. 
+
+
+\begin{figure}[bht]%
+\begin{center}
+\includegraphics[height=4cm]{boundingBox.png} 
+\end{center}
+\caption{A boundingBox coordinates system.}%
+\label{fig:boundingbox}%
+\end{figure}
+
+You must use the file \verb|BoundingBox.java| provided and complete the implementation of the following methods:
+\begin{itemize}
+	\item \verb|BoundingBox(int x, int y, int width, int height)| a constructor which throws an \verb|IllegalArgumentException| if the width or height are not greater or equal to 1.
+	
+	\item \verb|boolean equals(Object o)| which returns \verb|true| if \verb|o| has the same width, height and top-left corner, \verb|false| otherwise.
+
+	\item \verb|boolean contains(int x, int y)| which returns \verb|true| if the point $(x,y)$ is contained in the bounding box, \verb|false| otherwise.
+	
+	\item \verb|boolean contains(BoundingBox box)| which returns \verb|true| if the area covered by \verb|box| is entirely comprised in the bounding box, \verb|false| otherwise. Note, A bounding box is contained within itself.
+
+%\newpage
+	
+	\item \verb|boolean intersects(BoundingBox box)| which returns \verb|true| if some part of the area covered by \verb|box| is also part of the bounding box, \verb|false| otherwise. You could {\bfseries modify} Algorithm~\ref{algo:intersect} which checks if two rectangles do not intersect to solve this problem, or you could devise your own algorithm. 
+
+\end{itemize}
+
+%\underline{{\bfseries Note:}} To test your class, we have provided a JUnit test class in the file \verb|BoundingBoxTest.java|.
+
+
+\begin{algorithm}[H]
+\SetAlgoLined
+		\KwData{Two rectangle A(Xa,Ya, Wa,Ha) and B(Xb, Yb, Wb, Hb) where (X,Y) stands for the coordinate of the top-left corner, W for width and H for height.}
+		\KwResult{True if A and B do not intersect, False otherwise}
+		\eIf{Xb+Wb < Xa or Yb+Hb < Ya or Xa+Wa < Xb or Ya+Ha < Yb }{
+		return True;
+		}
+		{
+		return False;
+		}
+\caption{Algorithm to check if two rectangles A and B do not intersect.}
+\label{algo:intersect}
+\end{algorithm}
+
+
+\begin{answer}
+\lstinputlisting[language=Java]{BoundingBox.java}
+\end{answer}
+
+
+
+
+\part[10] Implement the class \verb|Asset| which implements the interface \verb|IAsset|. The class \verb|Asset| has at least the following attributes:
+
+\begin{itemize}
+	\item \verb|String content| represents a single asset of the company such as a warehouse.  Note, we do not have to implement a warehouse class, for simplicity we will use a \verb|String|. For example, \verb|"Warehouse 51"|.  
+	
+	\item \verb|BoundingBox area| is the area used/covered by that asset.
+\end{itemize}
+
+You must use the file \verb|Asset.java| provided and complete the implementation of the following methods:
+\begin{itemize}
+	\item \verb|Asset(String content, BoundingBox area)| where \verb|content| is the asset (such as \verb|"Warehouse 51"|), and \verb|area| is the area covered by that asset. The constructor must throw an \verb|IllegalArgumentException| if \verb|content| or \verb|area| are \verb|null|.
+
+	\item \verb|boolean equals(Object o)| which returns \verb|true| if \verb|o| has the same content and the same bounding box, \verb|false| otherwise.
+
+	\item \verb|String getContent()| which returns the content of the asset.
+	
+	\item \verb|BoundingBox getArea()| which returns the area covered by the asset.
+	
+	\item \verb|boolean intersect(BoundingBox region)| which returns \verb|true| if the area covered by the asset intersects\verb|region|, \verb|false| otherwise.
+	
+	\item \verb|boolean isContainedIn(BoundingBox region)| which returns \verb|true| if the asset's area is contained inside \verb|region|, \verb|false| otherwise.
+
+\end{itemize}
+
+%\underline{{\bfseries Note:}} To test your class, we have provided a JUnit test class in the file \verb|AssetTest.java|.
+
+
+\begin{answer}
+\lstinputlisting[language=Java]{Asset.java}
+\end{answer}
+
+
+
+
+\newpage
+
+\part[15] We have provided an incomplete implementation of a QuadTree in the class \verb|QTreeAssetManager|. You must complete the implementation of the following  methods from the interface \verb|IAssetManager|.
+
+\begin{sequence}
+	\bit{7} \verb|Set<IAsset> getAssets()| which returns all assets contained in that QuadTree.
+
+\begin{answer}
+\lstinputlisting[language=Java, firstline=137, lastline=149]{QTreeAssetManager.java}
+\end{answer}
+	
+	\bit{8} \verb|Set<IAsset> getAssets(BoundingBox region)| which returns all assets contained in the QuadTree that intersect the given \verb|region|.
+
+\begin{answer}
+\lstinputlisting[language=Java, firstline=151, lastline=183]{QTreeAssetManager.java}
+\end{answer}
+
+\end{sequence}
+
+
+\underline{{\bfseries hint:}} To query a QuadTree, starting at the root node, examine each asset in that node to see if it intersects with the query region. If it does add the entry to the set of entries to be returned. Then examine each child node, and check if it intersects the area being queried for. If it does, recurse into that child node.
+
+
+
+
+%\underline{{\bfseries Note:}} To test your class, we have provided a JUnit test class in the file \verb|QTreeAssetManagerTestTest.java|.
+
+
+\end{question}
+
+
+
+
+
+\end{document}
