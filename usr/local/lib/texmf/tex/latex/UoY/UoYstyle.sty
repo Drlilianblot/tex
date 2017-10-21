@@ -57,21 +57,21 @@
 \ifpdf%
  % PDFLaTeX with pdftex driver
   \IfFileExists%
-  {/usr/share/york-logos/pdf/UOY-Logo-Long-Black.pdf}%
+  {/usr/share/york-logos/pdf/UOY-Logo-Stacked-shield-Black.pdf}%
   {\newcommand*{\UoYstyle@logodir}{/usr/share/york-logos/pdf}}%
   {\newcommand*{\UoYstyle@logodir}{york-logos/pdf}}%
 \else
  % Ordinary LaTeX with dvips driver
   \IfFileExists%
-  {/usr/share/york-logos/eps/UOY-Logo-Long-Black.eps}%
+  {/usr/share/york-logos/eps/UOY-Logo-Stacked-shield-Black.eps}%
   {\newcommand*{\UoYstyle@logodir}{/usr/share/york-logos/eps}}%
   {\newcommand*{\UoYstyle@logodir}{./york-logos/eps}}%
 \fi
 \newcommand*{\UoYstyle@loadlogo}[3]{%
      \raisebox{#2}{\resizebox{!}{#1}{\includegraphics{\UoYstyle@logodir/#3}}}}
-\newcommand*{\UoYbwlogo}[1][3.5ex]{\UoYstyle@loadlogo{#1}{-1.2ex}{UOY-Logo-Long-Black}}
-\newcommand*{\UoYbluelogo}[1][3.5ex]{\UoYstyle@loadlogo{#1}{-1.2ex}{UOY-Logo-Long-PMS432}}
-\newcommand*{\UoYgreenlogo}[1][3.5ex]{\UoYstyle@loadlogo{#1}{-1.2ex}{UOY-Logo-Long-PMS432}}
+\newcommand*{\UoYbwlogo}[1][3.5ex]{\UoYstyle@loadlogo{#1}{-1.2ex}{UOY-Logo-Stacked-shield-Black}}
+\newcommand*{\UoYbluelogo}[1][3.5ex]{\UoYstyle@loadlogo{#1}{-1.2ex}{UOY-Logo-Stacked-shield-PMS432}}
+\newcommand*{\UoYgreenlogo}[1][3.5ex]{\UoYstyle@loadlogo{#1}{-1.2ex}{UOY-Logo-Stacked-shield-PMS432}}
 \newcommand*{\Woodcut}[1][7ex]{\UoYstyle@loadlogo{#1}{0pt}{univwoodcut}}
 \newcommand*{\UoYbluewoodcut}[1][7ex]{\UoYstyle@loadlogo{#1}{0pt}{wct-p281}}
 \newcommand*{\UoYgreenwoodcut}[1][7ex]{\UoYstyle@loadlogo{#1}{0pt}{wct-p567}}
