@@ -1,0 +1,127 @@
+\documentclass[fontsize=12, final]{UoYOpenExam}
+
+\Degrees{MEng and BEng} % If more than two, should be: BEng, MEng, and MMath
+
+\Examyear{2017--8} 
+\Maccode{COM000XXX}
+\Module{Writing Assessmens at UoY}
+
+\Issued{Wednesday, 11 Oct 2017} 	%date format must be like: Wednesday, 11 Oct 2017
+
+\Due{12:00 noon, Wednesday, 18 Oct 2017}				% Date format must be like: 12:00 noon, Wednesday, 18 Oct 2017
+												% Time must be 12:00 noon Monday-Thursday or 09:00 AM on Monday
+												% From 2018-9 No submission on Fridays or weekends
+												
+\Marksdue{Wednesday, 25 Oct 2017}	% Date format must be like: Wednesday, 25 Oct 2017
+
+\Setter{Lilian Blot}
+\Setteremail{lilian.blot@york.ac.uk}
+
+%\Demonstration{None} 		% If a demonstation is needed use \Demonstration{Friday, 13 Oct 2017}, 
+												%% \Demonstration{None} otherwise
+%
+\Component{Open Assessment}				% If multiple assessments in the module, use \Component{Component name}
+												% \Component{None} otherwise
+
+
+%\Resit % Uncomment if it is a resit paper
+
+%\Team 	% Uncomment if it is a group work
+
+\Rubric{
+The rubric may specify several things where applicable. It could be an expected or maximum length for submissions, measured in pages (not words).
+
+\textbf{(For example)} Answer all questions. Note the page limits for each question. Parts of
+answers that go beyond the page limit \textbf{WILL} not be marked. References must be listed at
+the end of the document and do not count towards page limits. 
+}
+
+\newcommand{\kwd}[1]{\textsf{#1}}
+\newcommand{\cmd}[1]{$\backslash$\textsf{#1}}
+\newcommand{\tcmd}[3]{\cmd{#1}$\{$#3{#2}$\}$}
+\newcommand{\dcmd}[2]{\tcmd{#1}{#2}{\emph}}
+\newcommand{\pcmd}[2]{\tcmd{#1}{#2}{\kwd}}
+
+\begin{document}
+
+\section{Introduction}
+This document describes \kwd{UoYOpenExam} \LaTeX2e\ document classes, that support the
+typesetting of University of York examination papers.  It assumes that
+you are relatively familiar with \LaTeX\ in its latest incarnation
+(\LaTeXe).  Its creator, Leslie Lamport, has written a user guide and
+reference manual \cite{Lamport1994}; another useful book is by Kopka and
+Daly \cite{KopkaDaly1999}. 
+
+The examination paper is set in the University style
+\cite{UoYStyleGuide}.
+
+\section{Front matter}\label{Declarations:S}
+
+The front matter in \kwd{UoYOpenExam} is controlled by declarations that
+appear in the preamble.  The declarations are listed in Table
+\ref{Declarations:T}, together with the classes for which they are
+appropriate.
+\begin{table}
+\begin{center}
+\begin{tabular}[t]{|p{5.5cm}|p{7cm}|}
+\hline
+Declaration&Example\\\hline
+\dcmd{Maccode}{MAC code}&ex: COM00020M\\
+\dcmd{Examyear}{Year}&ex: 2017--8\\
+\dcmd{Degrees}{Degree list}&ex: BSc, MEng and MSc\\
+\dcmd{Module}{Name}&ex Advanced Programming Concepts\\
+\dcmd{Setter}{Name(s) of setters}&Lilian Blot\\
+\dcmd{Setteremail}{email(s) of setters}&lilian.blot@york.ac.uk\\
+\dcmd{Rubric}{Text}&Must be clear and concise.\\
+\dcmd{Issue}{date of issue}&ex: Wednesday, 18 Oct 2017\\
+\dcmd{Due}{Time and date due back}&ex: 12:00 noon, Wednesday, 25 Oct 2017\\
+\dcmd{Marksdue}{date marks are due}&ex: Wednesday, 01 Oct 2017\\
+\dcmd{Demonstration}{date of Demo}&date of Demonstration,  None if there are no demonstration 
+for this examination. For example, \pcmd{Demonstration}{Wednesday, 01 Oct 2017} or \pcmd{Demonstration}{None}\\
+\dcmd{Component}{Component name}&Examination of a component from a 
+multi-component module, None if single component module. 
+for example, \pcmd{Component}{HACS~Paper~II}, or \pcmd{Component}{None}\\\hline
+\cmd{Team}  \hfill \emph{(Optional)} & For group assessment. Do not use for individual assessment.\\
+\cmd{Resit} \hfill \emph{(Optional)} & For Resit papers.\\\hline
+\end{tabular}
+\end{center}
+\caption{Declarations for the front matter}\label{Declarations:T}
+\end{table}
+They are all compulsory (except for \cmd{Team} and \cmd{Resit}), and \TeX\ will
+halt with a suitable error message if they are omitted.  The front
+matter for a open examination is printed on the first page by itself.
+
+A degree list should be of the form:
+\begin{verse}
+        \pcmd{Degrees}{BSc}\\
+        \pcmd{Degrees}{BA and BEng}\\
+        \pcmd{Degrees}{BSc, MEng and MSc}
+\end{verse}
+
+The ``\pcmd{Rubric}{\ldots}'' declaration is for any further
+miscellaneous instructions.  The argument may contain paragraphs
+breaks.
+
+\section{Rough and final copy}
+A pair of class options are provided to help version control.  The
+default option is \kwd{final}, and this should be used for the final
+production run of the paper.
+
+For rough versions of the paper, the option \kwd{rough} should be
+given.  This adds a message to the front of the paper, and to each
+page's header declaring that it is a draft, and the date on which the
+draft was processed by \LaTeX.
+
+\section{Special Paper}
+Departments must submit special papers for some students, such as students returning from leave of absence, or students who have specific requirements, such as large print or coloured paper. Three copies of these special papers must be submitted to the Exams Office in clear plastic wallets. Each wallet must have a label on the front indicating the name of the candidate, the date and time of exam, and the venue.
+
+Please note that special papers have the same deadline as the regular papers for that module.
+
+%
+%\section{Miscellaneous matters}
+\bibliographystyle{plain}
+\bibliography{References}
+
+
+\end{document}
+
