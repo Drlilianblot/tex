@@ -10,19 +10,16 @@
 %				Lilian Blot
 %				<lilian.blot@york.ac.uk>
 %
-%       2017 Oct 19              Updated for new rules about open assessment template
+%       2017 Oct 19              Updated for new rules about open assessment 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{xstring}
+
 % The header code...
 \def\UoYe@file@name{UoYOpenExam}
 \def\UoYe@file@date{2017/10/19}
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{UoYOpenExam}[2017/10/19 Lilian Blot, Computer Science]
-
-\newif\ifUoYe@IsTeam
-\DeclareOption{Open Group Assessment}{\UoYe@IsTeamtrue}
-\DeclareOption{Open Individual Assessment}{\UoYe@IsTeamfalse}
-\newcommand*{\Team}{\UoYe@IsTeamtrue}
 
 
 \DeclareOption{final}{\def\UoYe@drafthead{}\def\UoYe@draftbanner{}}
@@ -32,7 +29,7 @@
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{scrartcl}}
 \ExecuteOptions{final}
 \ProcessOptions
-\LoadClass[12pt,paper=A4,twoside=false]{scrartcl}
+\LoadClass[twoside=true]{scrartcl}
 \RequirePackage{UoYstyle}
 \RequirePackage{ifthen}
 \RequirePackage{geometry}
@@ -68,17 +65,19 @@
 
 % Some compulsory declarations
 
-\UoYe@var{Part}
+\UoYe@var{Maccode}
 \UoYe@var{Degrees}
 \UoYe@var{Examyear}
-\UoYe@var{Maccode}
-\UoYe@var{Courses}
 \UoYe@var{Module}
-\UoYe@var{Issue}
+\UoYe@var{Component}
+\UoYe@var{Issued}
 \UoYe@var{Due}
+\UoYe@var{Demonstration}
 \UoYe@var{Marksdue}
 \UoYe@var{Setter}
 \UoYe@var{Setteremail}
+\Component{None}
+\Demonstration{None}
 
 % A non-standard compulsory declaration
 \long\def\Rubric#1{\def\UoYe@Rubric{#1}}
@@ -89,25 +88,18 @@
         
 }
 
+\newcommand*{\lastpage}{\pageref{lastpage}}
+
+\newcommand{\UoYe@EndMarker}{\textbf{\large End of examination paper}}%{\rule{0.66\textwidth}{2ex}}
+
 \newif\ifresitpaper
 \resitpaperfalse
 \newcommand*{\Resit}{\resitpapertrue}
 
-\newif\ifpart
-\partfalse
-%\newcommand*{\Part#1}{\parttrue}
+\newif\ifUoYe@IsTeam
+{\UoYe@IsTeamtrue}
+\newcommand*{\Team}{\UoYe@IsTeamtrue}
 
-
-
-
-\newif\ifdemonstration
-\demonstrationfalse
-\newcommand*{\Demonstration}{\demonstrationtrue}
-
-
-\newcommand*{\lastpage}{\pageref{lastpage}}
-
-\newcommand{\UoYe@EndMarker}{\textbf{\large End of examination paper}}%{\rule{0.66\textwidth}{2ex}}
 
 
 % set page style
@@ -129,13 +121,19 @@
     \UoYe@Maccode%
   \fi%
 }
-\def\@evenhead{\UoYe@drafthead\hskip 0pt plus 1fil minus 0pt}
+\def\@evenhead{%
+  \UoYe@drafthead%
+  \hskip 0pt plus 1fil minus 0pt%
+  \ifresitpaper%
+    \begin{tabular}{c}\UoYe@Maccode\\RESIT\end{tabular}%
+  \else%
+    \UoYe@Maccode%
+  \fi%
+}
 
 % odd and even feet are always the same                     
 \def\@evenfoot{\hskip 0pt plus 1fil Page~\thepage~of~\lastpage\hskip 0pt plus 1fil\relax}
 \def\@oddfoot{\hskip 0pt plus 1fil Page~\thepage~of~\lastpage\hskip 0pt plus 1fil\relax}
-
-
 
 % Set TeX & LaTeX style parameters
 \renewcommand{\familydefault}{\sfdefault}
@@ -149,21 +147,22 @@
 	\centering
   %\raggedright%
   %\begin{center}%
-    {\scshape University of York}\\[2ex]%
-    {\bfseries \UoYe@Degrees{} Degree Examinations, \UoYe@Examyear}\\[2ex]%
-    {\large\mdseries\scshape DEPARTMENT OF COMPUTER SCIENCE}\\[2ex]%
-		\ifpart {
-    {\Large\bfseries\UoYe@Module}\\[1ex]%
-		{\large\Part#1}\\[2ex]}
-		\else {\Large\bfseries\UoYe@Module}\\[2ex]%
+    %{\scshape University of York}\\[2ex]%
+		\UoYbwlogo[8ex]\\[4ex]
+		
+    {\bfseries \UoYe@Degrees{} Degree Examinations \UoYe@Examyear}\\[2ex]%
+    {\large\mdseries\scshape DEPARTMENT OF COMPUTER SCIENCE}\\[4ex]%
+		\IfStrEq{\UoYe@Component}{None}{{\Large\bfseries\UoYe@Module}}{{\Large\bfseries\UoYe@Module} \\[1ex] \textbf{\UoYe@Component}}\\[2ex]
+
     \ifUoYe@IsTeam Open Group Assessment\else Open Individual Assessment\fi\\[2ex]
 		
   %\end{center}%
 		
   \raggedright%
-    Issued:\textbf{\UoYe@Issue}\\[1.5ex]
-    Submission due:\textbf{\UoYe@Due}\\[1.5ex]
-    Feedback and marks due:\textbf{\UoYe@Marksdue}\\[2ex]
+    \textbf{Issued:~\UoYe@Issued}\\[.5ex]
+    \textbf{Submission due:~\UoYe@Due}\\[.5ex]
+    \IfStrEq{\UoYe@Demonstration}{None}{}{\textbf{Demonstration:~\UoYe@Demonstration}\\[.5ex]}
+    \textbf{Feedback and marks due:~\UoYe@Marksdue}\\[2ex]
 
     \UoYe@draftbanner%
 		
@@ -171,20 +170,23 @@
 		
 Your attention is drawn to the section about Academic Misconduct in your Departmental Handbook: \url{https://www.cs.york.ac.uk/student/handbook/}.\\[1.5ex]
 
-Any queries on this assessment should be addressed by email to \UoYe@Setter at \UoYe@Setteremail. Answers that apply to all students will be posted on the VLE.
+Any queries on this assessment should be addressed by email to \UoYe@Setter ~at \UoYe@Setteremail. Answers that apply to all students will be posted on the VLE.
 		
 		{\large \bfseries Rubric:}\\
     \UoYe@Rubric%
   \sffamily%
-  \newpage%
-  \resitpaperfalse%
+	\label{firstpage}
+	\vfill
+	\ifUoYe@IsTeam {\bfseries The name of all your group members should be on the front cover of your assessment. Do not include exam numbers as these are private to individuals.} 
+	\else {\bfseries Your exam number should be on the front cover of your assessment. You should not be otherwise identified anywhere on your submission.}
+	\fi
+  \clearpage%
 }
 
 \AtEndDocument{%
   \hspace{5em}
   \begin{center}\UoYe@EndMarker\end{center}%
   \label{lastpage}
-  %\thispagestyle{UoYe@lastpage}%
 }
 
 \geometry{inner=3.5cm,outer=3cm}
