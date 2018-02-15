@@ -21,11 +21,13 @@
 %       2016 Apr 05              Removed all logos
 %       2016 Apr 05              Added watermark if answers are produced
 %       2017 Mar 27              Updated for new rules about resits
+%       2017 Apr 07              Changed default fontsize to Koma-Script default
+%       2017 Dec 01-05           Major updates for new front page, etc.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % The header code...
 \def\UoYe@file@name{UoYClosedExam}
-\def\UoYe@file@date{2016/04/05}
+\def\UoYe@file@date{2017/12/01}
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{\UoYe@file@name}[\UoYe@file@date\ Jeremy Jacob, Computer Science]
 \newif\ifanswers
@@ -51,14 +53,11 @@
     \bgroup\parindent=0pt}%
   {\egroup\egroup}%
 }
-\DeclareOption{final}{\def\UoYe@drafthead{}\def\UoYe@draftbanner{}}
-\DeclareOption{rough}{%
-  \def\UoYe@drafthead{\fbox{Draft: \today}}%
-  \def\UoYe@draftbanner{{\LARGE DRAFT: \today}\\[4ex]}}
+
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{scrartcl}}
-\ExecuteOptions{noanswers,final}
+\ExecuteOptions{noanswers,fontsize=12pt}
 \ProcessOptions
-\LoadClass[12pt,paper=A4,twoside=true]{scrartcl}
+\LoadClass[twoside=true]{scrartcl}
 \RequirePackage{UoYstyle}
 \RequirePackage{ifthen}
 \RequirePackage{geometry}
@@ -77,11 +76,11 @@
 \def\UoYe@var#1{%
   \expandafter\def\csname#1\endcsname##1{%
     \expandafter\def\csname UoYe@#1\endcsname{##1}}%
-        \csname#1\endcsname{%
-          \ClassError{UoYClosedExam}%
-                     {Missing `#1' declaration!}%
-                     {Insert the `#1' declaration and restart!}%
-        }%
+  \csname#1\endcsname{%
+     \ClassError{UoYClosedExam}%
+                {Missing `#1' declaration!}%
+                {Insert a `#1' declaration and restart!}%
+  }%
 }
 
 % To record obsolete declaration.
@@ -96,8 +95,67 @@
 
 \UoYe@var{Examyear}
 \UoYe@var{Maccode}
-\UoYe@var{Duration}
 \UoYe@var{Title}
+
+% Macros for degree lists
+\def\UoYe@DegreeList{}
+\newif\ifUoYe@lastdeg%
+\UoYe@lastdegfalse%
+\def\UoYe@DegreeList{}
+\newcommand*{\Degrees}[1]{\edef\UoYe@DegreeList{\UoYe@DegreeList{}#1}}
+\def\UoYe@Deg#1{% macro to declare an award
+  \expandafter\def\csname #1\endcsname{%
+    \ifx\UoYe@DegreeList\empty%
+    \Degrees{#1}%
+  \else%
+    \ifUoYe@lastdeg%
+      \Degrees{\ and #1}%
+    \else%
+      \Degrees{, #1}%
+    \fi
+  \fi}%
+}%
+\def\UoYe@Degrees{
+  \ifx\UoYe@DegreeList\empty%
+    \ClassError{UoYClosedExam}%
+               {Missing Degree(s) declaration(s).}%
+               {Enter at least one Degree declaration and restart!}%
+  \else%
+    \UoYe@DegreeList%
+  \fi%
+}
+
+\UoYe@Deg{BSc}
+\UoYe@Deg{BEng}
+\UoYe@Deg{MEng}
+\UoYe@Deg{MSc}
+%\UoYe@Deg{DEng}
+\UoYe@Deg{MMath}
+\newcommand*{\AND}{\UoYe@lastdegtrue}
+
+% Macros for durations
+\UoYe@var{Duration}
+\newcommand*{\OneHour}{\Duration{ONE~hour}}
+\newcommand*{\OneHourHalf}{\Duration{ONE~hour and THIRTY~minutes}}
+\newcommand*{\TwoHour}{\Duration{TWO~hours}}
+\newcommand*{\TwoHourHalf}{\Duration{TWO~hours and THIRTY~minutes}}
+\newcommand*{\ThreeHour}{\Duration{THREE~hours}}
+
+% Macros for supplies.
+% These are split into two: optional for calculator, graph paper, etc
+% and at most one of booklet type.
+
+\def\UoYe@SuppliesList{}
+\newcommand*{\Supplies}[1]{%
+  \edef\UoYe@SuppliesList{\UoYe@SuppliesList{}#1\par}}
+\newcommand*{\Calculator}{\Supplies{Calculator}}
+\newcommand*{\GraphPaper}{\Supplies{Graph paper}}
+\newcommand*{\ScrapPaper}{\Supplies{Scrap paper}}
+
+\UoYe@var{Booklet}
+\newcommand*{\GreenBooklet}{\Booklet{One Green Booklet}} % large
+\newcommand*{\BluePerQ}{\Booklet{One Blue Booklet per question}}
+\newcommand*{\BluePerS}{\Booklet{One Blue Booklet per section}}
 
 % A non-standard compulsory declaration
 \long\def\Rubric#1{\def\UoYe@Rubric{#1}}
@@ -105,12 +163,17 @@
   \ClassError{UoYClosedExam}%
              {Missing `Rubric' declaration!}%
              {Insert the `Rubric' declaration and restart!}%
-        
 }
 
-\newif\ifresitpaper
-\resitpaperfalse
-\newcommand*{\Resit}{\resitpapertrue}
+% macros for resit papers
+\newif\ifUoYe@resitpaper
+\UoYe@resitpaperfalse
+\newcommand*{\Resit}{\UoYe@resitpapertrue}
+
+% macros for secure papers
+\newif\ifUoYe@securepaper
+\UoYe@securepaperfalse
+\newcommand*{\Secure}{\UoYe@securepapertrue}
 
 % a non-compulsory declaration
 \newif\ifsectioned
@@ -120,7 +183,6 @@
 % now obsolete, once compulsory, declarations.
 
 \UoYe@obsoletevar{Part}
-\UoYe@obsoletevar{Degrees}
 
 \newcommand*{\lastpage}{\pageref{lastpage}}
 
@@ -264,15 +326,14 @@
 % In the main part of the paper
 % headings only depend on evenness or oddness of page
 \def\@oddhead{%
-  \UoYe@drafthead%
   \hskip 0pt plus 1fil minus 0pt%
-  \ifresitpaper%
+  \ifUoYe@resitpaper%
     \begin{tabular}{c}\UoYe@Maccode\\RESIT\end{tabular}%
   \else%
     \UoYe@Maccode%
   \fi%
 }
-\def\@evenhead{\UoYe@drafthead\hskip 0pt plus 1fil minus 0pt}
+\def\@evenhead{\hskip 0pt plus 1fil minus 0pt}
 
 % and even feet are always the same                     
 \def\@evenfoot{\hskip 0pt plus 1fil Page~\thepage~of~\lastpage\hskip 0pt plus 1fil\relax}
@@ -300,7 +361,7 @@
 \def\Continued{\thispagestyle{UoYe@withinqs}}
 
 \def\ps@UoYe@answerpages{%
-        \def\@evenhead{Marking Notes\hskip 0pt plus 1fil\UoYe@drafthead}%
+        \def\@evenhead{Marking Notes\hskip 0pt plus 1fil}%
         % odd heads do not change
         \def\@evenfoot{\hskip 0pt plus 1fil\thepage\hskip 0pt plus 1fil}%
         \def\@oddfoot{\hskip 0pt plus 1fil\thepage\hskip 0pt plus 1fil}%
@@ -324,23 +385,33 @@
   \raggedright%
   \TurnOver%\thispagestyle{UoYe@firstpage}%
   \begin{center}%
-    {\scshape University of York}\\[2ex]%
-    {\bfseries Degree Examinations~\UoYe@Examyear}\\[4ex]%
+    \UoYblack[12ex]\\[2ex]%
+    {\bfseries \UoYe@Degrees~Degree Examinations~\UoYe@Examyear}\\[4ex]%
     {\Large\mdseries\scshape Department of Computer Science}\\[4ex]%
-    {\Large\bfseries\UoYe@Title}\\[4ex]%
+    {\LARGE\bfseries\UoYe@Title}\\[4ex]%
+    \ifUoYe@securepaper{\Large\mdseries\scshape Secure~Paper}\\[4ex]\fi
     Time allowed: \textbf{\UoYe@Duration}\\[4ex]%
-    \UoYe@draftbanner%
+  \end{center}%
+  \paragraph*{Marking scheme}%
+  \begin{quotation}
     \ifsectioned%
       This paper consists of the following Sections:\\%
       \@starttoc{toc}%
       Answer each Section in a \textbf{separate} %
       answer booklet.\\[4ex]%%
     \fi%
+
     \UoYe@Rubric%
-  \end{center}%
+  \end{quotation}
+  \paragraph*{Supplies}%
+  \begin{quotation}
+    \UoYe@Booklet%
+
+    \UoYe@SuppliesList%
+  \end{quotation}
   \sffamily%
   \newpage%
-  \resitpaperfalse%
+  \UoYe@resitpaperfalse%
 }
 \AtEndDocument{%
   \hspace{5em}

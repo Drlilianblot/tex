@@ -1,6 +1,6 @@
 %       UoYstyle.sty
 %
-%       Jeremy Jacob
+%       Jeremy Jacob 
 %
 %       2004 Mar 17 Added normal activation of pdfcprot to do margin
 %                   kerning for Palatino fonts.
@@ -18,15 +18,18 @@
 %       2008 Nov 17 Re-fixed autoref names
 %       2010 Mar 09 Added colour names for official York Blue & Green
 %       2010 Sep 27 Added colour names for departmental colours
-%       2015 Sep 17 Updated file paths for Ubuntu-based Linux distribution
-%                   (Jonathon Fernyhough)
-%       2016 Oct 17 Updated file paths for york-logos package, update names and 
-%                   colours for new visual identity assets
-%                   (Jonathon Fernyhough)
-%
+%       2010 Nov 02 fixed minor bug on line 60.
+%       2010 Nov 15 added option to turn logos off
+%       2011 Jan 05 changed autrefname definitions to track change in hyperref
+%       2011 Jan 24 major change in the way logotypes are found
+%       2011 Jan 24 added THES University of the Year logotypes
+%       2011 Aug 26 added conditional call to typearea
+%       2012 Oct 12 removed changes to autoref names
+%       2016 Jan 08 Tidied away long redundant code
+%       2017 May 02 Updated colours to current set; fonts not changed.
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{UoYstyle}[2010/09/27 Jeremy Jacob]
+\ProvidesPackage{UoYstyle}[2016/11/14 Jeremy Jacob]
 
 \RequirePackage[T1]{fontenc}
 \RequirePackage{textcomp}
@@ -36,85 +39,65 @@
 \RequirePackage{microtype}
 \RequirePackage[british]{babel}
 \RequirePackage{graphics,color}
-\RequirePackage{ifpdf}
 \RequirePackage{hyperref}
-% hyperref loads package `url': the next command sets the typeface of URLS.
+% hyperref loads package `url': the next command sets the typeface of URLs.
 \urlstyle{sf}
-% Correct autoref's names
-\renewcommand*{\Itemautorefname}{Item}
-\renewcommand*{\chapterautorefname}{Chapter}
-\renewcommand*{\sectionautorefname}{Section}
-\renewcommand*{\subsectionautorefname}{Subsection}
-\renewcommand*{\subsubsectionautorefname}{Subsubsection}
-\renewcommand*{\paragraphautorefname}{Paragraph}
-\renewcommand*{\Hfootnoteautorefname}{Footnote}
-\renewcommand*{\pageautorefname}{Page}
+% recalculate type area if koma-Script class is loaded
+\ifx\typearea\undefined\else\typearea[current]{calc}\fi%
 
-% The macro \UoYstyle@logodir and the following switch is unnecessary
-% if the logotype directories are included in the standard TeX search
-% paths.
-
-\ifpdf%
- % PDFLaTeX with pdftex driver
-  \IfFileExists%
-  {/usr/share/york-logos/pdf/UOY-Logo-Stacked-shield-Black.pdf}%
-  {\newcommand*{\UoYstyle@logodir}{/usr/share/york-logos/pdf}}%
-  {\newcommand*{\UoYstyle@logodir}{york-logos/pdf}}%
-\else
- % Ordinary LaTeX with dvips driver
-  \IfFileExists%
-  {/usr/share/york-logos/eps/UOY-Logo-Stacked-shield-Black.eps}%
-  {\newcommand*{\UoYstyle@logodir}{/usr/share/york-logos/eps}}%
-  {\newcommand*{\UoYstyle@logodir}{./york-logos/eps}}%
-\fi
+% The logo file needs to be in the TeX search path
 \newcommand*{\UoYstyle@loadlogo}[3]{%
-     \raisebox{#2}{\resizebox{!}{#1}{\includegraphics{\UoYstyle@logodir/#3}}}}
-\newcommand*{\UoYbwlogo}[1][3.5ex]{\UoYstyle@loadlogo{#1}{-1.2ex}{UOY-Logo-Stacked-shield-Black}}
-\newcommand*{\UoYbluelogo}[1][3.5ex]{\UoYstyle@loadlogo{#1}{-1.2ex}{UOY-Logo-Stacked-shield-PMS432}}
-\newcommand*{\UoYgreenlogo}[1][3.5ex]{\UoYstyle@loadlogo{#1}{-1.2ex}{UOY-Logo-Stacked-shield-PMS432}}
-\newcommand*{\Woodcut}[1][7ex]{\UoYstyle@loadlogo{#1}{0pt}{univwoodcut}}
-\newcommand*{\UoYbluewoodcut}[1][7ex]{\UoYstyle@loadlogo{#1}{0pt}{wct-p281}}
-\newcommand*{\UoYgreenwoodcut}[1][7ex]{\UoYstyle@loadlogo{#1}{0pt}{wct-p567}}
-% \newcommand*{\UCSlogoMC}[1][20ex]{\UoYstyle@loadlogo{#1}{-1.2ex}{UCS_logo_bw}}
-% \newcommand*{\UCSlogoPC}[1][20ex]{\UoYstyle@loadlogo{#1}{-1.2ex}{UCS_logo}}
+     \raisebox{#2}{\resizebox{!}{#1}{\includegraphics{#3}}}}
+\newcommand*{\woodcut}[1][3.5ex]{\UoYstyle@loadlogo{#1}{0pt}{asb-lhbw}}
+\newcommand*{\UoYblack}[1][3.5ex]{%
+  \UoYstyle@loadlogo{#1}{0pt}{UOY-Logo-Stacked-shield-Black}}
+\newcommand*{\UoYcharcoal}[1][3.5ex]{%
+  \UoYstyle@loadlogo{#1}{0pt}{UOY-Logo-Stacked-shield-PMS432}}
+\newcommand*{\UoYwhite}[1][3.5ex]{%
+  \UoYstyle@loadlogo{#1}{0pt}{UOY-Logo-Stacked-shield-White}}
+
+% \newcommand*{\UoYbwlogo}[1][3.5ex]{\UoYstyle@loadlogo{#1}{-1.2ex}{uoy}}
+% \newcommand*{\UoYbluelogo}[1][3.5ex]{\UoYstyle@loadlogo{#1}{-1.2ex}{uoy-p281}}
+% \newcommand*{\UoYgreenlogo}[1][3.5ex]{\UoYstyle@loadlogo{#1}{-1.2ex}{uoy-p567}}
+% \newcommand*{\Woodcut}[1][7ex]{\UoYstyle@loadlogo{#1}{0pt}{univwoodcut}}
+% \newcommand*{\UoYbluewoodcut}[1][7ex]{\UoYstyle@loadlogo{#1}{0pt}{wct-p281}}
+% \newcommand*{\UoYgreenwoodcut}[1][7ex]{\UoYstyle@loadlogo{#1}{0pt}{wct-p567}}
 
 % University colours
 % Colour values taken from
-% http://www.york.ac.uk/communications/publications/visual-identity/colours/
-% \definecolor{UoYgreen}{cmyk}{0.82,0.00,0.64,0.70} % Pantone 567
-% \definecolor{UoYblue} {cmyk}{1.00,0.72,0.00,0.32} % Pantone 281
-\definecolor{UoYgreen}{cmyk}{0.28,0.14,0.00,0.72} % Pantone 432
-\definecolor{UoYblue} {cmyk}{0.28,0.14,0.00,0.72} % Pantone 432
+% https://www.york.ac.uk/staff/external-relations/brand/colours/
 
-% Departmental colours
+% Core colours & 85% tints
+\definecolor{PMS315}{cmyk}{1.00,0.12,0.21,0.44}
+\definecolor{PMS315t}{cmyk}{0.85,0.10,0.18,0.37}
+\definecolor{PMS432}{cmyk}{0.65,0.43,0.26,0.78}
+\definecolor{PMS432t}{cmyk}{0.55,0.37,0.22,0.66}
+
+% neutral colours
+\definecolor{PMS427}{cmyk}{0.07,0.03,0.05,0.08}
+\definecolor{PMS427t}{cmyk}{0.03,0.01,0.02,0.03}
+\definecolor{PMS7534}{cmyk}{0.05,0.05,0.15,0.08}
+\definecolor{PMS7534t}{cmyk}{0.02,0.02,0.06,0.03}
+
+% Accent colours
+
+\definecolor{PMS2925}{cmyk}{0.85,0.21,0,0}
+\definecolor{PMS326}{cmyk}{0.81,0,0.39,0}
+\definecolor{PMS382}{cmyk}{0.28,0,1,0}
+\definecolor{PMS369}{cmyk}{0.60,0,0.97,0}
+\definecolor{PMS1235}{cmyk}{0,0.31,0.98,0}
+\definecolor{PMS1505}{cmyk}{0,0.56,0.90,0}
+\definecolor{PMS185}{cmyk}{0,0.93,0.79,0}
+\definecolor{PMS226}{cmyk}{0.04,0.88,0,0}
+\definecolor{PMS265}{cmyk}{0.52,0.66,0,0}
+
+% old colours, now deprecated
+\definecolor{UoYgreen}{cmyk}{0.82,0.00,0.64,0.70} % Pantone 567
+\definecolor{UoYblue} {cmyk}{1.00,0.72,0.00,0.32} % Pantone 281
+
+% Departmental colours, possibly now deprecated
 % Colour values provided by Emma Hodgson
 \definecolor{UoYCSbrightgreen}{cmyk}{0.46,0.17,1.00,0.01}
 \definecolor{UoYCSyellowgreen}{cmyk}{0.16,0.02,0.51,0.00}
 \definecolor{UoYCSgrey}       {cmyk}{0.00,0.00,0.00,0.60}
 \definecolor{UoYCSblue}       {cmyk}{0.99,0.68,0.28,0.10}
-
-% THES University of the Year logotypes
-
-\newcommand*{\THESrgb}[1][7ex]{\UoYstyle@loadlogo{#1}{0ex}{THE2010-logo-large-RGB}}
-\newcommand*{\THESgrey}[1][7ex]{\UoYstyle@loadlogo{#1}{0ex}{THE2010-logo-large-grey}}
-
-% For the Queen's Anniversary Prize in Further and Higher Education
-% 1996
-
-% The inconsistency in the naming scheme is correct (if unfortunate)
-
-% \newcommand*{\UoYstyle@QAPFHE}[2]{%
-%   \PackageWarning{UoYstyle}{We are only entitled to use Queen's
-%   Anniversary Prize logotypes on documents dated no later than
-%   February 2001.}
-%   \def\QAPFHEsize{#1}%
-%   \ifdim\QAPFHEsize<40mm%
-%     \def\QAPFHEsize{40mm}%
-%     \PackageWarning{UoYstyle}{QAPFHE logotype size increased to 40mm.}%
-%   \fi%
-%   \colorbox{white}{\UoYstyle@loadlogo{\QAPFHEsize}{0pt}{#2}}}
-% \newcommand*{\QAPFHEthreePC}[1][40mm]{\UoYstyle@QAPFHE{#1}{Queens3lines2colour}}
-% \newcommand*{\QAPFHEfourPC}[1][40mm]{\UoYstyle@QAPFHE{#1}{Queens4lines2colour}}
-% \newcommand*{\QAPFHEthreeMC}[1][40mm]{\UoYstyle@QAPFHE{#1}{Queens3linesblack}}
-% \newcommand*{\QAPFHEfourMC}[1][40mm]{\UoYstyle@QAPFHE{#1}{Queens4linesBlack}}
-% \newcommand*{\QAPFHEmasterPC}[1][40mm]{\UoYstyle@QAPFHE{#1}{QueensMasterLogo}}

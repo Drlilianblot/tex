@@ -10,7 +10,13 @@
 %				Lilian Blot
 %				<lilian.blot@york.ac.uk>
 %
-%       2017 Oct 19              Updated for new rules about open assessment 
+%       2017 Oct 19               Updated for new rules about open assessment 
+%																	- added Component field \Componenet
+%																	- added Demonstration date \Demonstration
+%																	- added Special paper S after MacCode 
+%																	  \Special
+%																	- Added text for individual and group 
+%																	  assessments
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{xstring}
@@ -96,6 +102,10 @@
 \resitpaperfalse
 \newcommand*{\Resit}{\resitpapertrue}
 
+\newif\ifspecialpaper
+\specialpaperfalse
+\newcommand*{\Special}{\specialpapertrue}
+
 \newif\ifUoYe@IsTeam
 {\UoYe@IsTeamtrue}
 \newcommand*{\Team}{\UoYe@IsTeamtrue}
@@ -116,18 +126,34 @@
   \UoYe@drafthead%
   \hskip 0pt plus 1fil minus 0pt%
   \ifresitpaper%
-    \begin{tabular}{c}\UoYe@Maccode\\RESIT\end{tabular}%
+		\ifspecialpaper%
+			\begin{tabular}{c}\UoYe@Maccode--S\\RESIT\end{tabular}%
+		\else%
+			\begin{tabular}{c}\UoYe@Maccode\\RESIT\end{tabular}%
+		\fi
   \else%
-    \UoYe@Maccode%
+		\ifspecialpaper%
+			\UoYe@Maccode--S%
+		\else
+			\UoYe@Maccode%
+		\fi
   \fi%
 }
 \def\@evenhead{%
   \UoYe@drafthead%
   \hskip 0pt plus 1fil minus 0pt%
   \ifresitpaper%
-    \begin{tabular}{c}\UoYe@Maccode\\RESIT\end{tabular}%
+		\ifspecialpaper%
+			\begin{tabular}{c}\UoYe@Maccode--S\\RESIT\end{tabular}%
+		\else%
+			\begin{tabular}{c}\UoYe@Maccode\\RESIT\end{tabular}%
+		\fi
   \else%
-    \UoYe@Maccode%
+		\ifspecialpaper%
+			\UoYe@Maccode--S%
+		\else
+			\UoYe@Maccode%
+		\fi
   \fi%
 }
 
